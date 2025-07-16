@@ -21,3 +21,111 @@ Todas as funções devem ser **evocadas pelo modelo** conforme o _prompt_ do usu
 ### 3. Requisitos não‑funcionais (obrigatórios)
 
 1. **Organização do código**  
+
+/app
+/agents
+/graph # nós & edges do LangGraph
+/tools
+/vector_db
+/ui # frontend
+/tests
+docker-compose.yml
+README.md
+
+2. **Interface gráfica** – escolha livre (ex.: Streamlit, React + FastAPI, Gradio).  
+- Chats em tempo real (streaming).  
+- Logs de debug em painel lateral ou console.  
+3. **Docker first** – `docker compose up` precisa trazer tudo (Postgres, vetorDB, serviço da app).  
+4. **LangGraph** obrigatório **caso não adote Azure Foundry**.
+
+---
+
+### 4. Pontos extra (bonus)
+
+| Tema | Exemplo prático que vale pontos |
+|------|---------------------------------|
+| **Azure Foundry** | Provisionar agentes como workflows do Foundry; usar Azure AI Search como vetorDB e Azure SQL. |
+| **Avaliação automatizada** | Testes de _prompt‑eval_ via `langchain-bench`, `ragas` ou `LangSmith` (datasets simples simulando perguntas). |
+| **Arquitetura** | PlantUML ou C4 diagram no repo (`docs/architecture.puml` + PNG gerado). |
+| **Rationale técnico** | README explicando escolhas de libs, trade‑offs, custos, segurança (rate‑limit da API do tempo, sanitização de SQL, etc.). |
+
+---
+
+### 5. Diretrizes de implementação
+
+- **Agents**  
+- _ReAct_ ou _Plan‑and‑Execute_ pattern.  
+- Cada _tool_ em isolamento: entrada dataclass, saída tipada.  
+- **LangGraph**  
+- Nós: `UserNode`, `PlannerNode`, `ExecutorNode`, `MemoryNode`.  
+- Edge de fallback → `SearchTool` para perguntas sem contexto.  
+- **Persistência vetorial**  
+- Embeddings: `OpenAIEmbeddings` ou `azure_openai` caso Foundry.  
+- Alimentar via script `python ingest.py`.  
+- **Segurança**  
+- Variáveis sensíveis (.env) montadas no container.  
+- Limitar queries SQL (whitelist ou `sqlglot` parse‑safe).  
+- **Testes**  
+- Unitário por tool (`pytest`).  
+- _E2E_ ≥ 2 casos cobrindo fluxo completo (pergunta → resposta).  
+- **Observabilidade**  
+- Logs estruturados (JSON) + simples tracer (`LangChainTracer` ou OpenTelemetry).
+
+---
+
+### 6. Exemplo de `docker-compose.yml` (mínimo)
+
+```yaml
+version: "3.9"
+services:
+app:
+ build: .
+ env_file: .env
+ ports: ["8501:8501"]          # Streamlit
+ depends_on: [postgres, chroma]
+
+postgres:
+ image: postgres:16
+ environment:
+   POSTGRES_PASSWORD: postgres
+ volumes: ["pgdata:/var/lib/postgresql/data"]
+
+chroma:
+ image: chromadb/chroma
+ ports: ["8000:8000"]
+
+volumes:
+pgdata:
+
+```
+
+
+### 8. Roteiro sugerido para o candidato
+Fork do repositório – Dia 0.
+
+MVP (busca Web + chat UI) – Dia 1.
+
+Vector DB + SQL tool – Dia 2.
+
+Weather API + LangGraph orchestration – Dia 3.
+
+Docker & README – Dia 4.
+
+Bonus (tests, Foundry, diagram) – Dia 5.
+
+Buffer & polish – Dia 6.
+
+Entrevista técnica – Dia 7.
+
+### 9. Como enviar
+Repositório Git público ou privado com acesso ao avaliador.
+
+Instruções no README:
+```yaml
+git clone
+
+cp .env.example .env
+
+docker compose up --build
+```
+URL da UI.
