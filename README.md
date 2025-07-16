@@ -21,7 +21,7 @@ Todas as funções devem ser **evocadas pelo modelo** conforme o _prompt_ do usu
 ### 3. Requisitos não‑funcionais (obrigatórios)
 
 1. **Organização do código**  
-
+```BASH
 /app
 /agents
 /graph # nós & edges do LangGraph
@@ -31,6 +31,7 @@ Todas as funções devem ser **evocadas pelo modelo** conforme o _prompt_ do usu
 /tests
 docker-compose.yml
 README.md
+```
 
 2. **Interface gráfica** – escolha livre (ex.: Streamlit, React + FastAPI, Gradio).  
 - Chats em tempo real (streaming).  
