@@ -99,25 +99,7 @@ pgdata:
 
 ```
 
-
-### 8. Roteiro sugerido para o candidato
-Fork do repositório – Dia 0.
-
-MVP (busca Web + chat UI) – Dia 1.
-
-Vector DB + SQL tool – Dia 2.
-
-Weather API + LangGraph orchestration – Dia 3.
-
-Docker & README – Dia 4.
-
-Bonus (tests, Foundry, diagram) – Dia 5.
-
-Buffer & polish – Dia 6.
-
-Entrevista técnica – Dia 7.
-
-### 9. Como enviar
+### 8. Como enviar
 Repositório Git público ou privado com acesso ao avaliador.
 
 Instruções no README:
@@ -128,4 +110,4 @@ cp .env.example .env
 
 docker compose up --build
 ```
-URL da UI.
+Não esquecer da URL da UI.
