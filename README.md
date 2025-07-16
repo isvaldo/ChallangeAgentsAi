@@ -15,6 +15,7 @@ A entrega será avaliada pelo nosso time de engenharia durante uma entrevista t�
 | **Previsão do tempo** | Consultar uma API pública (ex. OpenWeatherMap) e responder em linguagem natural. | HTTP tool via LangChain |
 
 Todas as funções devem ser **evocadas pelo modelo** conforme o _prompt_ do usuário, sem botões dedicados.
+As funcionalidades devem ser expressas em multi-agents!
 
 ---
 
